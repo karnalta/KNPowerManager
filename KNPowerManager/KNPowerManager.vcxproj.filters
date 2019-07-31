@@ -45,6 +45,9 @@
     <ClInclude Include="src\KNWebServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="__vm\.KNPowerManager.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\KNCardStorage.cpp">
