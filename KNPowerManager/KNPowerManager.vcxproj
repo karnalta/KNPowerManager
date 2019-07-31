@@ -120,7 +120,6 @@
     <ClInclude Include="src\KNTask.h" />
     <ClInclude Include="src\KNTaskScheduler.h" />
     <ClInclude Include="src\KNWebServer.h" />
-    <ClInclude Include="__vm\.KNPowerManager.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\KNCardStorage.cpp" />

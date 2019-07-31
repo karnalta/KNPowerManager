@@ -18,9 +18,6 @@
     <None Include="KNPowerManager.ino" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="__vm\.KNPowerManager.vsarduino.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Declarations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
