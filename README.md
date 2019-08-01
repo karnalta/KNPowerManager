@@ -2,7 +2,7 @@
 
 ## Description
 
-Arduino Mega ADK based project to allow remote control of computer's power states (IPMI style working with any computer).
+Arduino Mega ADK based project to allow remote control of computer's power state (IPMI style working with any computer).
 
 ## Hardware
 
@@ -14,6 +14,8 @@ Client module : Custom made module (PCB + 3D Print) and customized computer's re
 - Manageable from a basic WebUI or a RESTful API style.
 - Get power consumption of each computer.
 - Get power state of each computer.
-- Hard resetting the PSU.
-- Press the power button.
-- Press the reset button.
+- Hard resetting the PSU of a computer.
+- Press the power button of a computer.
+- Press the reset button of a computer.
+- Allow to schedule the above operations for each computer.
+- Maximum 8 computers can be controlled.
