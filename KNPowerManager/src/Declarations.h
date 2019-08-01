@@ -116,10 +116,12 @@ const char* const knclock_table[] PROGMEM = { knclock_01, knclock_02, knclock_03
 
 const char knpwrswitch_01[] PROGMEM = "KNPwrSwitch : Quick power switch started.";
 const char knpwrswitch_02[] PROGMEM = "KNPwrSwitch : Quick power switch completed.";
-const char knpwrswitch_03[] PROGMEM = "KNPwrSwitch : Consumption measurement on module %s (RP : %s w/h - AP : %s w/h - PF : %s).";
-const char knpwrswitch_04[] PROGMEM = "Power On";
-const char knpwrswitch_05[] PROGMEM = "Power Off";
-const char* const knpwrswitch_table[] PROGMEM = { knpwrswitch_01, knpwrswitch_02, knpwrswitch_03, knpwrswitch_04, knpwrswitch_05 };
+const char knpwrswitch_03[] PROGMEM = "KNPwrSwitch : Power switch button press started.";
+const char knpwrswitch_04[] PROGMEM = "KNPwrSwitch : Power switch button press completed.";
+const char knpwrswitch_05[] PROGMEM = "KNPwrSwitch : Reset switch button press started.";
+const char knpwrswitch_06[] PROGMEM = "KNPwrSwitch : Reset switch button press completed.";
+const char knpwrswitch_07[] PROGMEM = "KNPwrSwitch : Consumption measurement on module %s (RP : %s w/h - AP : %s w/h - PF : %s).";
+const char* const knpwrswitch_table[] PROGMEM = { knpwrswitch_01, knpwrswitch_02, knpwrswitch_03, knpwrswitch_04, knpwrswitch_05, knpwrswitch_06, knpwrswitch_07 };
 
 const char kncardstorage_01[] PROGMEM = "KNCardStorage : SD card initialization failed !";
 const char kncardstorage_02[] PROGMEM = "KNCardStorage : HTML files not present !";

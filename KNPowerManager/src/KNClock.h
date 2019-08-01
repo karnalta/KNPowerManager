@@ -3,9 +3,9 @@
 
 #include "Declarations.h"
 
-/*
-	Time Management class
-*/
+/// <summary>
+/// Time Management.
+/// </summary>
 class KNClock
 {
 private:
@@ -13,14 +13,21 @@ private:
 	EthernetUDP _udp;
 	NTPClient* _ntpClient = NULL;
 
-public:
-	// Constructor
+public:	
+	/// <summary>
+	/// Initializes a new instance of the <see cref="KNClock"/> class.
+	/// </summary>
 	KNClock();
-
-	// Update time from BE NTP server
+	
+	/// <summary>
+	/// Updates datetime from NTP server.
+	/// </summary>
 	void UpdateFromNTPServer();
-
-	// Return date & time as a formatted string
+	
+	/// <summary>
+	///  Return date & time as a formatted string.
+	/// </summary>
+	/// <returns></returns>
 	String GetDateTime();
 };
 

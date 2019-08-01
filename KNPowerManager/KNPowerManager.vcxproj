@@ -84,7 +84,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\KNPowerManager;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\Ethernet\src;$(ProjectDir)..\..\..\..\Documents\Arduino\libraries\NTPClient;$(ProjectDir)..\..\..\..\Documents\Arduino\libraries\RTClib;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\src;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\SD\src;$(ProjectDir)..\..\..\..\Documents\Arduino\libraries\Vector;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src;$(ProjectDir)..\Libraries\SPI\1.0\SPI\src;$(ProjectDir)..\Libraries\Vector\0.0.0\Vector;$(ProjectDir)..\Libraries\RTClib\1.2.1\RTClib;$(ProjectDir)..\Libraries\NTPClient\3.1.0\NTPClient;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\libraries;$(ProjectDir)..\..\..\..\Documents\Arduino\libraries;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\variants\mega;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include\avr;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.8.1\include;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\KNPowerManager;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\Ethernet\src;$(ProjectDir)..\Libraries\NTPClient\3.1.0\NTPClient;$(ProjectDir)..\Libraries\RTClib\1.2.1\RTClib;$(ProjectDir)..\Libraries\SPI\1.0\SPI\src;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\SD\src;$(ProjectDir)..\Libraries\Vector\0.0.0\Vector;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\libraries;$(ProjectDir)..\..\..\..\Documents\Arduino\libraries;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\variants\mega;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include\avr;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.8.1\include;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>$(ProjectDir)__vm\.KNPowerManager.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <PreprocessorDefinitions>__AVR_atmega2560__;__AVR_ATmega2560__;_VMDEBUG=1;F_CPU=16000000L;ARDUINO=10809;ARDUINO_AVR_ADK;ARDUINO_ARCH_AVR;__cplusplus=201103L;_VMICRO_INTELLISENSE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -126,6 +126,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\KNSwitchEvent.h" />
     <ClInclude Include="src\Declarations.h" />
     <ClInclude Include="src\KNCardStorage.h" />
     <ClInclude Include="src\KNClock.h" />
@@ -138,6 +139,7 @@
     <ClInclude Include="__vm\.KNPowerManager.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\KNSwitchEvent.cpp" />
     <ClCompile Include="src\KNCardStorage.cpp" />
     <ClCompile Include="src\KNClock.cpp" />
     <ClCompile Include="src\KNLog.cpp" />

@@ -1,8 +1,13 @@
 /*
-    Name:       KNPowerManager.ino
-    Created:    29-05-19 10:27:22
-    Author:     MATHIEU Dimitri
+
+KNPowerManager Project.
+
+Designed for Arduino MEGA + Ethernet Shield + RTC module.
+
+By MATHIEU Dimitri.
+
 */
+
 #include <Arduino.h>
 
 #include "src/Declarations.h"

@@ -5,6 +5,9 @@
 
 typedef void (*funcCallback)();
 
+/// <summary>
+/// RESTful API Manager.
+/// </summary>
 class KNRest
 {
 private:
@@ -24,6 +27,7 @@ private:
 	/// <summary>
 	/// Functions array
 	/// </summary>
+
 	uint8_t	_funcIndex = 0;
 	funcCallback _funcCallback[MAX_FUNC];
 	const char* _funcNames[MAX_FUNC];
@@ -31,6 +35,7 @@ private:
 	/// <summary>
 	/// Variables array
 	/// </summary>
+
 	uint8_t _varIndex = 0;
 	Variable* _varStruct[MAX_VAR];
 	const char* _varNames[MAX_VAR];
@@ -101,10 +106,9 @@ public:
 	void AddFunc(const char* name, funcCallback callback);
 
 	/// <summary>
-	/// Handles incoming requests.
+	/// Process (in running loop).
 	/// </summary>
 	void Process();
-
 };
 
 #endif

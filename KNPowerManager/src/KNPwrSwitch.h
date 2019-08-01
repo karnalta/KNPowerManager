@@ -2,11 +2,11 @@
 #define KNPwrSwitch_H
 
 #include "Declarations.h"
+#include "KNSwitchEvent.h"
 
-/**
- * @brief KN Power Module.
- * 
- */
+/// <summary>
+/// KNPowerManager's module controller.
+/// </summary>
 class KNPwrSwitch
 {
 private:
@@ -16,79 +16,66 @@ private:
 	uint8_t _pwrPin = 0;
 	uint8_t _rstPin = 0;
 	byte _moduleType = 0;
-
-	long _quickSwitchStart = 0;
-	bool _isQuickSwitching = false;
-
-	long _pwrSwitchStart = 0;
-	bool _isPwrSwitching = false;
-
-	long _rstSwitchStart = 0;
-	bool _isRstSwitching = false;
 	
 	float _realPower = 0;
 	float _appaPower = 0;
 	float _powerFactor = 0;
 	bool _powerState = false;
+	String _powerStateDesc;
+
+	KNSwitchEvent* _switchingEvents[3];
+
 
 public:
 	inline const char* GetName() { return _name.c_str(); }
-	inline bool GetQuickSwitchState() { return _isQuickSwitching; }
 	inline float GetRealPower() { return _realPower; }
 	inline float GetApparentPower() { return _appaPower; }
 	inline float GetPowerFactor() { return _powerFactor; }
 	inline bool GetPowerState() { return _powerState; }
-	String GetPowerStateDesc();
-
-	/**
-	 * @brief Construct a new KNPwrSwitch object.
-	 * 
-	 * @param name Debug name
-	 * @param dPin Relay pin
-	 * @param aPin Power consumption pin
-	 * @param pwrPin PowerSwitch pin
-	 * @param rstPin ResetSwitch pin
-	 * @param moduleType Module type (Not implemented)
-	 */
+	inline const char* GetPowerStateDesc() { return _powerStateDesc.c_str(); };
+	
+	/// <summary>
+	/// Initializes a new instance of the <see cref="KNPwrSwitch"/> class.
+	/// </summary>
+	/// <param name="name">The name.</param>
+	/// <param name="dPin">The d pin.</param>
+	/// <param name="aPin">a pin.</param>
+	/// <param name="pwrPin">The PWR pin.</param>
+	/// <param name="rstPin">The RST pin.</param>
+	/// <param name="moduleType">Type of the module.</param>
 	KNPwrSwitch(String name, uint8_t dPin, uint8_t aPin, uint8_t pwrPin, uint8_t rstPin, byte moduleType = 0);
-
-	/**
-	 * @brief Permanently switch relay on or off.
-	 * 
-	 * @param on True if switch on
-	 */
+	
+	/// <summary>
+	/// Switches the power.
+	/// </summary>
+	/// <param name="on">if set to <c>true</c> [on].</param>
 	void SwitchPower(bool on = true);
-
-	/**
-	 * @brief Press the power switch button.
-	 * 
-	 * @param duration Duration in seconds
-	 */
+	
+	/// <summary>
+	/// Presses the power switch.
+	/// </summary>
+	/// <param name="duration">The duration.</param>
 	void PressPowerSwitch(uint8_t duration);
-
-	/**
-	 * @brief Press the reset switch button.
-	 * 
-	 * @param duration Duration in seconds
-	 */
+	
+	/// <summary>
+	/// Presses the reset switch.
+	/// </summary>
+	/// <param name="duration">The duration.</param>
 	void PressResetSwitch(uint8_t duration);
-
-	/**
-	 * @brief Switch off power relay for 5 seconds.
-	 * 
-	 */
+	
+	/// <summary>
+	/// Quicks the switch power.
+	/// </summary>
 	void QuickSwitchPower();
-
-	/**
-	 * @brief Refresh the power consumption data.
-	 * 
-	 */
+	
+	/// <summary>
+	/// Refreshes the power consumption.
+	/// </summary>
 	void RefreshPowerConsumption();
-
-	/**
-	 * @brief Process pending operation.
-	 * 
-	 */
+	
+	/// <summary>
+	/// Process (in running loop).
+	/// </summary>
 	void Process();
 };
 

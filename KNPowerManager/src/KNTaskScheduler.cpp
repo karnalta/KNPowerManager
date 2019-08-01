@@ -2,7 +2,7 @@
 
 KNTaskScheduler::KNTaskScheduler()
 {
-
+	// nothing
 }
 
 void KNTaskScheduler::AddTask(KNTask* task)

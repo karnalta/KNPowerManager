@@ -4,9 +4,9 @@
 #include "Declarations.h"
 #include "KNPwrSwitch.h"
 
-/*
-	WebServer Management class.
-*/
+/// <summary>
+/// WebUI Provider.
+/// </summary>
 class KNWebServer
 {
 private:

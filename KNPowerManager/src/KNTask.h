@@ -5,6 +5,9 @@
 
 typedef void (*taskCallback)();
 
+/// <summary>
+/// Scheduled Task.
+/// </summary>
 class KNTask
 {
 private:
@@ -28,17 +31,42 @@ public:
 	inline byte GetMinute() { return _minute; }
 	inline int GetSecond() { return _second; }
 	inline bool GetLog() { return _log; }
-
-	// Constructors (Everyday at xx:xx:xx)
-	KNTask(String name, byte hour, byte minute, byte second, taskCallback callback, bool log = true);
 	
-	// Constructor (Every xx seconds)
-	KNTask(String name,  int second, taskCallback callback, bool log = true);
-
-	// Constructor (Every week at xx:xx:xx)
-	KNTask(String name,  byte dayOfWeek, byte hour, byte minute, byte second, taskCallback callback, bool log = true);
-
-	// Call callback function
+	/// <summary>
+	/// Initializes a new instance of the <see cref="KNTask"/> class.
+	/// </summary>
+	/// <param name="name">The name.</param>
+	/// <param name="hour">The hour.</param>
+	/// <param name="minute">The minute.</param>
+	/// <param name="second">The second.</param>
+	/// <param name="callback">The callback.</param>
+	/// <param name="log">if set to <c>true</c> [log].</param>
+	KNTask(String name, byte hour, byte minute, byte second, taskCallback callback, bool log = true);
+		
+	/// <summary>
+	/// Initializes a new instance of the <see cref="KNTask"/> class.
+	/// </summary>
+	/// <param name="name">The name.</param>
+	/// <param name="second">The second.</param>
+	/// <param name="callback">The callback.</param>
+	/// <param name="log">if set to <c>true</c> [log].</param>
+	KNTask(String name, int second, taskCallback callback, bool log = true);
+	
+	/// <summary>
+	/// Initializes a new instance of the <see cref="KNTask"/> class.
+	/// </summary>
+	/// <param name="name">The name.</param>
+	/// <param name="dayOfWeek">The day of week.</param>
+	/// <param name="hour">The hour.</param>
+	/// <param name="minute">The minute.</param>
+	/// <param name="second">The second.</param>
+	/// <param name="callback">The callback.</param>
+	/// <param name="log">if set to <c>true</c> [log].</param>
+	KNTask(String name, byte dayOfWeek, byte hour, byte minute, byte second, taskCallback callback, bool log = true);
+	
+	/// <summary>
+	/// Callbacks the function.
+	/// </summary>
 	void Callback();
 };
 

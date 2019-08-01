@@ -27,7 +27,7 @@ void KNWebServer::IndexReply(EthernetClient client, KNPwrSwitch** psArray)
 	{
 		client.write("<tr>");
 		client.write("<td>"); client.write(psArray[i]->GetName()); client.write("</td>");
-		client.write("<td>"); client.write(psArray[i]->GetPowerStateDesc().c_str());  client.write("</td>");
+		client.write("<td>"); client.write(psArray[i]->GetPowerStateDesc());  client.write("</td>");
 		client.write("<td><a href=\"index.html?cmd=QSWITCH&id="); client.write(String(i).c_str()); client.write("\">Quick Switch Power</a></td>");
 		client.write("<td align=\"right\">"); client.write(String(psArray[i]->GetRealPower()).c_str()); client.write(" W/h</td>");
 		client.write("</tr>\n");

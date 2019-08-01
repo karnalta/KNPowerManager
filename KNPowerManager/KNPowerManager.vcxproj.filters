@@ -48,6 +48,9 @@
     <ClInclude Include="__vm\.KNPowerManager.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\KNSwitchEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\KNCardStorage.cpp">
@@ -72,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\KNWebServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\KNSwitchEvent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

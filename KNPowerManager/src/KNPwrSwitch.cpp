@@ -8,6 +8,11 @@ KNPwrSwitch::KNPwrSwitch(String name, uint8_t dPin, uint8_t aPin, uint8_t pwrPin
 	_pwrPin = pwrPin;
 	_rstPin = rstPin;
 	_moduleType = moduleType;
+
+	// Init switching events
+	_switchingEvents[0] = new KNSwitchEvent(_dPin);
+	_switchingEvents[1] = new KNSwitchEvent(_pwrPin);
+	_switchingEvents[2] = new KNSwitchEvent(_rstPin);
 }
 
 void KNPwrSwitch::SwitchPower(bool on)
@@ -15,18 +20,31 @@ void KNPwrSwitch::SwitchPower(bool on)
 	// Not Implemented
 }
 
+void KNPwrSwitch::PressPowerSwitch(uint8_t duration)
+{
+	// Start switch event
+	_switchingEvents[1]->SetDuration(duration);
+	_switchingEvents[1]->Start();
+
+	KNLog::LogEvent(&(knpwrswitch_table[2]));
+}
+
+void KNPwrSwitch::PressResetSwitch(uint8_t duration)
+{
+	// Start switch event
+	_switchingEvents[2]->SetDuration(duration);
+	_switchingEvents[2]->Start();
+
+	KNLog::LogEvent(&(knpwrswitch_table[4]));
+}
+
 void KNPwrSwitch::QuickSwitchPower()
 {
-	// Switch module's relay
-	if (!_isQuickSwitching)
-	{
-		KNLog::LogEvent(&(knpwrswitch_table[0]));
+	// Start switch event
+	_switchingEvents[0]->SetDuration(5000);
+	_switchingEvents[0]->Start();
 
-		_isQuickSwitching = true;
-		_quickSwitchStart = millis();
-
-		digitalWrite(_dPin, HIGH);
-	}
+	KNLog::LogEvent(&(knpwrswitch_table[0]));
 }
 
 void KNPwrSwitch::RefreshPowerConsumption()
@@ -77,42 +95,34 @@ void KNPwrSwitch::RefreshPowerConsumption()
 		// Set power state
 		_powerState = _realPower <= PWR_THRESHOLD ? false : true;
 
+		// Update state description
+		if (_powerState)
+			strcpy_P(StringBuffer, (char*)pgm_read_word(&(knpwrswitch_table[3])));
+		else
+			strcpy_P(StringBuffer, (char*)pgm_read_word(&(knpwrswitch_table[4])));
+
+		_powerStateDesc = StringBuffer;
+
 		// Log measure
 		if (DEBUG_MODE)
 		{
 			char message[256];
-			strcpy_P(message, (char*)pgm_read_word(&(knpwrswitch_table[2])));
+			strcpy_P(message, (char*)pgm_read_word(&(knpwrswitch_table[6])));
 			sprintf(StringBuffer, message, _name.c_str(), ((String)_realPower).c_str(), ((String)_appaPower).c_str(), ((String)_powerFactor).c_str());
 			KNLog::LogEvent(StringBuffer);
 		}
 	}
 }
 
-String KNPwrSwitch::GetPowerStateDesc()
-{
-	if (_powerState)
-		strcpy_P(StringBuffer, (char*)pgm_read_word(&(knpwrswitch_table[3])));
-	else
-		strcpy_P(StringBuffer, (char*)pgm_read_word(&(knpwrswitch_table[4])));
-
-	return StringBuffer;
-}
-
 void KNPwrSwitch::Process()
 {
-	// Check if quick switching is running
-	if (_isQuickSwitching)
+	// Check all switching events
+	for (int i = 0; i < 3; i++)
 	{
-		long diff = millis() - _quickSwitchStart;
-
-		if (diff > 5000 || diff < 0)
+		if (_switchingEvents[i]->Check())
 		{
-			_isQuickSwitching = false;
-			_quickSwitchStart = 0;
-
-			digitalWrite(_dPin, LOW);
-
-			KNLog::LogEvent(&(knpwrswitch_table[1]));
+			_switchingEvents[i]->Reset();
+			KNLog::LogEvent(&(knpwrswitch_table[(i * 2) + 1]));
 		}
 	}
 }
