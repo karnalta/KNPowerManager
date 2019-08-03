@@ -91,7 +91,8 @@ class KNWebServer;
 
 // Strings storage in flash memoty
 const char global_01[] PROGMEM = "Welcome to KN Power Manager !";
-const char* const global_table[] PROGMEM = { global_01 };
+const char global_02[] PROGMEM = "Requiered parameters missing, cannot proceed operation.";
+const char* const global_table[] PROGMEM = { global_01, global_02 };
 
 const char knrest_01[] PROGMEM = "RESTful : Incoming request detected.";
 const char knrest_02[] PROGMEM = "RESTful : Request recieved.";

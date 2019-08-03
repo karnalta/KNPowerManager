@@ -35,6 +35,39 @@ void KNRest::ReplyError(EthernetClient client)
 	client.println("HTTP/1.1 400 BAD REQUEST");
 }
 
+void KNRest::DecodeParams(String args, Vector<FuncParam*>* params)
+{
+	if (args == "")
+		return;
+
+	// Parse
+	bool parsing = true;
+	while (parsing)
+	{
+		int index = args.indexOf('&');
+		String param = args;
+
+		// Check if there is another param after this one
+		if (index > 0)
+		{
+			param = args.substring(0, index);
+			args = args.substring(index + 1);
+		}
+		else
+			parsing = false;
+
+		// Decode param
+		int equalIndex = param.indexOf('=');
+		if (equalIndex > 0)
+		{
+			String key = param.substring(0, equalIndex);
+			String value = param.substring(equalIndex + 1);
+
+			params->PushBack(new FuncParam(key, value));
+		}
+	}
+}
+
 void KNRest::HandleRequest(String request, EthernetClient client)
 {
 	RequestType requestType = RequestType::UNKNOWN;
@@ -61,19 +94,31 @@ void KNRest::HandleRequest(String request, EthernetClient client)
 		{
 			commandType = CommandType::FUNC;
 
-			// Parse func name
-			uint8_t spaceIndex = request.indexOf(' ');
+			// Parse command
+			int spaceIndex = request.indexOf(' ');
 			request = request.substring(6, spaceIndex);
 
-			// Retrieve the function
-			uint8_t index = GetFuncIndex(request.c_str());	
+			// Parse func name and args
+			int slashIndex = request.indexOf('?');
+			String funcName = request;
+			if (slashIndex > 0)
+				funcName = request.substring(0, slashIndex);
+			String args = request.substring(slashIndex + 1);
 
+			// Retrieve the function
+			int index = GetFuncIndex(funcName.c_str());
+
+			// Decode params
+			Vector<FuncParam*> params; 
+			DecodeParams(args, &params);
+
+			// Callback
 			if (index < MAX_FUNC)
 			{
 				KNLog::LogEvent(&(knrest_table[3]), false);
-				KNLog::LogEvent(request, true, false);
+				KNLog::LogEvent(funcName, true, false);
 
-				_funcCallback[index]();
+				_funcCallback[index](params);
 
 				ReplyOk(client);
 				handled = true;
@@ -86,11 +131,11 @@ void KNRest::HandleRequest(String request, EthernetClient client)
 			commandType = CommandType::VAR;
 
 			// Parse variable name
-			uint8_t spaceIndex = request.indexOf(' ');
+			int spaceIndex = request.indexOf(' ');
 			request = request.substring(5, spaceIndex);
 
 			// Retrieve the variable
-			uint8_t index = GetVarIndex(request.c_str());
+			int index = GetVarIndex(request.c_str());
 
 			if (index < MAX_VAR)
 			{

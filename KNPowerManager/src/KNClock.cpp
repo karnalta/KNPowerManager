@@ -22,6 +22,7 @@ void KNClock::UpdateFromNTPServer()
 	else
 	{
 		String formattedDate = _ntpClient->getFormattedDate();
+		Serial.println(formattedDate);
 
 		// Update RTC module
 		_rtc->adjust(DateTime(formattedDate.substring(0, 4).toInt(), 

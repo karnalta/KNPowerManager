@@ -13,10 +13,10 @@ private:
 	long _startTime = 0;
 	bool _started = false;
 	bool _completed = false;
-	uint8_t _duration = 0;
+	int _duration = 0;
 
 public:	
-	inline void SetDuration(uint8_t duration) { _duration = duration; }
+	inline void SetDuration(int duration) { _duration = duration; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="KNSwitchEvent"/> class.

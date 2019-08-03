@@ -3,7 +3,24 @@
 
 #include "Declarations.h"
 
-typedef void (*funcCallback)();
+struct FuncParam {
+	String Name;
+	String Value;
+
+	FuncParam()
+	{
+		Name = "";
+		Value = "";
+	}
+
+	FuncParam(String name, String value)
+	{
+		Name = name;
+		Value = value;
+	}
+};
+
+typedef void (*funcCallback)(Vector<FuncParam*>);
 
 /// <summary>
 /// RESTful API Manager.
@@ -73,6 +90,13 @@ private:
 	/// </summary>
 	/// <param name="client">The client.</param>
 	void ReplyError(EthernetClient client);
+	
+	/// <summary>
+	/// Decodes the parameters.
+	/// </summary>
+	/// <param name="args">The arguments.</param>
+	/// <returns>An array of FuncParam</returns>
+	void DecodeParams(String args, Vector<FuncParam*>* params);
 
 	/// <summary>
 	/// Handles the request.

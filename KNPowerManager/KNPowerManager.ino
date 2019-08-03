@@ -32,10 +32,35 @@ KNPwrSwitch** _knPowerSwitches = NULL;
 KNClock* _knClock = NULL;
 KNCardStorage* _knCardStorage = NULL;
 
+// Callback functions predeclarations
+/*void TaskCallBack_UpdateNTP();
+void TaskCallBack_RefreshModules();
+void RESTCallBack_ResetPSU(Vector<FuncParam*>);
+void RESTCallBack_PressPwr(Vector<FuncParam*>);
+void RESTCallBack_PressRst(Vector<FuncParam*>);*/
+
 /// <summary>
-/// Task to update power modules data.
+/// Try to parse requiered parameters from params vector.
 /// </summary>
-void TASK_CheckPowerModules()
+/// <param name="params">The parameters.</param>
+/// <param name="id">The identifier.</param>
+/// <param name="duration">The duration.</param>
+void ParseParams(Vector<FuncParam*>* params, int* id, int* duration)
+{
+	for (int i = 0; i < params->Size(); i++)
+	{
+		(*params)[i]->Name.toLowerCase();
+		if ((*params)[i]->Name == "id")
+			*id = (*params)[i]->Value.toInt();
+		else if ((*params)[i]->Name == "duration")
+			*duration = (*params)[i]->Value.toInt();
+	}
+}
+
+/// <summary>
+/// Refresh modules data.
+/// </summary>
+void TaskCallBack_RefreshModules()
 {
 	// Check consumption
 	for (int i = 0; i < PWR_SWITCH_CNT; i++)
@@ -43,11 +68,62 @@ void TASK_CheckPowerModules()
 }
 
 /// <summary>
-/// Tasks to update the datetime from NTP server.
+/// Update datetime from NTP server.
 /// </summary>
-void TASK_UpdateNTPTime()
+void TaskCallBack_UpdateNTP()
 {
 	_knClock->UpdateFromNTPServer();
+}
+
+/// <summary>
+/// Reset the PSU controlled by a specific module.
+/// </summary>
+/// <param name="params">The parameters.</param>
+void RESTCallBack_ResetPSU(Vector<FuncParam*> params)
+{
+	int moduleId = -1;
+	int duration = -1;
+	ParseParams(&params, &moduleId, &duration);
+
+	// Start operation
+	if (moduleId > -1 && moduleId < (PWR_SWITCH_CNT - 1))
+		_knPowerSwitches[moduleId]->QuickSwitchPower();
+	else
+		KNLog::LogEvent(&(global_table[1]));
+}
+
+/// <summary>
+/// Press power button for x seconds from a specific module.
+/// </summary>
+/// <param name="params">The parameters.</param>
+void RESTCallBack_PressPwr(Vector<FuncParam*> params)
+{
+	int moduleId = -1;
+	int duration = -1;
+	ParseParams(&params, &moduleId, &duration);
+
+	// Start operation
+	if (moduleId > -1 && moduleId < (PWR_SWITCH_CNT - 1) && duration > 0)
+		_knPowerSwitches[moduleId]->PressPowerSwitch(duration);
+	else
+		KNLog::LogEvent(&(global_table[1]));
+}
+
+/// <summary>
+/// Press reset button for x seconds from a specific module.
+/// </summary>
+/// <param name="params">The parameters.</param>
+void RESTCallBack_PressRst(Vector<FuncParam*> params)
+{
+	int moduleId = -1;
+	int duration = -1;
+	ParseParams(&params, &moduleId, &duration);
+
+	// Start operation
+	if (moduleId > -1 && moduleId < (PWR_SWITCH_CNT - 1) && duration > 0)
+		_knPowerSwitches[moduleId]->PressResetSwitch(duration);
+	else
+		KNLog::LogEvent(&(global_table[1]));
 }
 
 /// <summary>
@@ -57,6 +133,9 @@ void setup()
 {
   // Serial debug
   if (DEBUG_MODE) { Serial.begin(9600); }
+
+  // Welcome
+  KNLog::LogEvent(&(global_table[0]));
 
   // Init Pins
   pinMode(PIN_RELAY01, OUTPUT);
@@ -98,24 +177,19 @@ void setup()
   // Init SD card
   _knCardStorage = new KNCardStorage();
 
-  // Init KNLog variables
+  // Init KNLog global variables
   LogClock = _knClock;
   LogCardStorage = _knCardStorage; 
 
-
-
-  // Create RESTful functions
-  _knRest->AddFunc("UpdateNTP", &TASK_UpdateNTPTime);
+  // Register RESTful functions
+  _knRest->AddFunc("ResetPSU", &RESTCallBack_ResetPSU);
 
   // Init TaskScheduler
   _knTaskScheduler = new KNTaskScheduler();
 
-  // Create tasks
-  _knTaskScheduler->AddTask(new KNTask("Check Power Modules", PWR_CHECK_INTER, &TASK_CheckPowerModules, false));
-  _knTaskScheduler->AddTask(new KNTask("Update time from NTP server", 0, 30, 0, &TASK_UpdateNTPTime));
-
-  // Welcome
-  KNLog::LogEvent(&(global_table[0]));
+  // Register tasks
+  _knTaskScheduler->AddTask(new KNTask("Check Power Modules", PWR_CHECK_INTER, &TaskCallBack_RefreshModules, false));
+  _knTaskScheduler->AddTask(new KNTask("Update time from NTP server", 0, 30, 0, &TaskCallBack_UpdateNTP));
 }
 
 /// <summary>
@@ -128,6 +202,10 @@ void loop()
 
 	// Process Tasks
 	_knTaskScheduler->Process();
+
+	// Process Modules
+	for (int i = 0; i < PWR_SWITCH_CNT; i++)
+		_knPowerSwitches[i]->Process();
 
 	delay(100);
 }
