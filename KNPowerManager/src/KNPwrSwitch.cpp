@@ -20,7 +20,7 @@ void KNPwrSwitch::SwitchPower(bool on)
 	// Not Implemented
 }
 
-void KNPwrSwitch::PressPowerSwitch(uint8_t duration)
+void KNPwrSwitch::PressPowerSwitch(int duration)
 {
 	// Start switch event
 	_switchingEvents[1]->SetDuration(duration);
@@ -29,7 +29,7 @@ void KNPwrSwitch::PressPowerSwitch(uint8_t duration)
 	KNLog::LogEvent(&(knpwrswitch_table[2]));
 }
 
-void KNPwrSwitch::PressResetSwitch(uint8_t duration)
+void KNPwrSwitch::PressResetSwitch(int duration)
 {
 	// Start switch event
 	_switchingEvents[2]->SetDuration(duration);

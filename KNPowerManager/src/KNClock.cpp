@@ -6,7 +6,8 @@ KNClock::KNClock()
 	_rtc = new RTC_DS1307();
 	if (!_rtc->begin())
 		KNLog::LogEvent(&(knclock_table[0]));
-	else
+	
+	if (!_rtc->isrunning())
 		_rtc->adjust(DateTime(F(__DATE__), F(__TIME__)));
 
 	// Setup NTP client
@@ -22,7 +23,6 @@ void KNClock::UpdateFromNTPServer()
 	else
 	{
 		String formattedDate = _ntpClient->getFormattedDate();
-		Serial.println(formattedDate);
 
 		// Update RTC module
 		_rtc->adjust(DateTime(formattedDate.substring(0, 4).toInt(), 

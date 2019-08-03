@@ -146,6 +146,22 @@ void setup()
   pinMode(PIN_RELAY06, OUTPUT);
   pinMode(PIN_RELAY07, OUTPUT);
   pinMode(PIN_RELAY08, OUTPUT);
+  pinMode(PIN_PWRSW01, OUTPUT);
+  pinMode(PIN_PWRSW02, OUTPUT);
+  pinMode(PIN_PWRSW03, OUTPUT);
+  pinMode(PIN_PWRSW04, OUTPUT);
+  pinMode(PIN_PWRSW05, OUTPUT);
+  pinMode(PIN_PWRSW06, OUTPUT);
+  pinMode(PIN_PWRSW07, OUTPUT);
+  pinMode(PIN_PWRSW08, OUTPUT);
+  pinMode(PIN_RSTSW01, OUTPUT);
+  pinMode(PIN_RSTSW02, OUTPUT);
+  pinMode(PIN_RSTSW03, OUTPUT);
+  pinMode(PIN_RSTSW04, OUTPUT);
+  pinMode(PIN_RSTSW05, OUTPUT);
+  pinMode(PIN_RSTSW06, OUTPUT);
+  pinMode(PIN_RSTSW07, OUTPUT);
+  pinMode(PIN_RSTSW08, OUTPUT);
   pinMode(PIN_PWRSS01, INPUT);
   pinMode(PIN_PWRSS02, INPUT);
   pinMode(PIN_PWRSS03, INPUT);
@@ -170,10 +186,6 @@ void setup()
 													   new KNPwrSwitch("Module 06", PIN_RELAY06, PIN_PWRSS06, PIN_PWRSW06, PIN_RSTSW06),
 													   new KNPwrSwitch("Module 07", PIN_RELAY07, PIN_PWRSS07, PIN_PWRSW07, PIN_RSTSW07),
 													   new KNPwrSwitch("Module 08", PIN_RELAY08, PIN_PWRSS08, PIN_PWRSW08, PIN_RSTSW08)};
-  // Init RTC clock
-  _knClock = new KNClock();
-  _knClock->UpdateFromNTPServer();
-
   // Init SD card
   _knCardStorage = new KNCardStorage();
 
@@ -183,6 +195,8 @@ void setup()
 
   // Register RESTful functions
   _knRest->AddFunc("ResetPSU", &RESTCallBack_ResetPSU);
+  _knRest->AddFunc("PressPwr", &RESTCallBack_PressPwr);
+  _knRest->AddFunc("PressRst", &RESTCallBack_PressRst);
 
   // Init TaskScheduler
   _knTaskScheduler = new KNTaskScheduler();
@@ -190,6 +204,10 @@ void setup()
   // Register tasks
   _knTaskScheduler->AddTask(new KNTask("Check Power Modules", PWR_CHECK_INTER, &TaskCallBack_RefreshModules, false));
   _knTaskScheduler->AddTask(new KNTask("Update time from NTP server", 0, 30, 0, &TaskCallBack_UpdateNTP));
+
+  // Init RTC clock
+  _knClock = new KNClock();
+  _knClock->UpdateFromNTPServer();
 }
 
 /// <summary>

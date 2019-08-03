@@ -55,13 +55,13 @@ public:
 	/// Presses the power switch.
 	/// </summary>
 	/// <param name="duration">The duration.</param>
-	void PressPowerSwitch(uint8_t duration);
+	void PressPowerSwitch(int duration);
 	
 	/// <summary>
 	/// Presses the reset switch.
 	/// </summary>
 	/// <param name="duration">The duration.</param>
-	void PressResetSwitch(uint8_t duration);
+	void PressResetSwitch(int duration);
 	
 	/// <summary>
 	/// Quicks the switch power.

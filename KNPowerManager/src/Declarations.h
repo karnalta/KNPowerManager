@@ -44,34 +44,34 @@
 #define PIN_TMPSS03 A2
 
 // Pins Definition (Power Sensor)
-#define PIN_PWRSS01 A3
-#define PIN_PWRSS02 A4
-#define PIN_PWRSS03 A5
-#define PIN_PWRSS04 A6
-#define PIN_PWRSS05 A7
-#define PIN_PWRSS06 A8
-#define PIN_PWRSS07 A9
-#define PIN_PWRSS08 A10
+#define PIN_PWRSS01 A8
+#define PIN_PWRSS02 A9
+#define PIN_PWRSS03 A10
+#define PIN_PWRSS04 A11
+#define PIN_PWRSS05 A12
+#define PIN_PWRSS06 A13
+#define PIN_PWRSS07 A14
+#define PIN_PWRSS08 A15
 
 // Pins Definition (Power Switch Button)
-#define PIN_PWRSW01 10
-#define PIN_PWRSW02 11
-#define PIN_PWRSW03 12
-#define PIN_PWRSW04 13
-#define PIN_PWRSW05 14
-#define PIN_PWRSW06 15
-#define PIN_PWRSW07 16
-#define PIN_PWRSW08 17
+#define PIN_PWRSW01 22
+#define PIN_PWRSW02 23
+#define PIN_PWRSW03 24
+#define PIN_PWRSW04 25
+#define PIN_PWRSW05 26
+#define PIN_PWRSW06 27
+#define PIN_PWRSW07 28
+#define PIN_PWRSW08 29
 
 // Pins Definition (Reset Switch Button)
-#define PIN_RSTSW01 18
-#define PIN_RSTSW02 19
-#define PIN_RSTSW03 20
-#define PIN_RSTSW04 21
-#define PIN_RSTSW05 22
-#define PIN_RSTSW06 23
-#define PIN_RSTSW07 24
-#define PIN_RSTSW08 25
+#define PIN_RSTSW01 40
+#define PIN_RSTSW02 41
+#define PIN_RSTSW03 42
+#define PIN_RSTSW04 43
+#define PIN_RSTSW05 44
+#define PIN_RSTSW06 45
+#define PIN_RSTSW07 46
+#define PIN_RSTSW08 47
 
 // NTP Server
 #define NTP_BELGIUM "0.be.pool.ntp.org"
