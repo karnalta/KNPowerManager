@@ -8,6 +8,7 @@ Arduino Mega ADK based project to allow remote control of computer's power state
 
 - Main controller : Arduino Mega + Ethernet Shield + RTC Module.
 - Client module : Custom made module (PCB + 3D Print) and customized computer's rear bracket.
+- EasyEDA schematics : https://easyeda.com/karnalta/kn-power-manager
 
 ## Features
 
