@@ -1,10 +1,10 @@
 #include "KNRest.h"
 
-uint8_t KNRest::GetIndex(String name, const char** stringArray, int size)
+uint8_t KNRest::GetFuncIndex(String name)
 {
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < MAX_FUNC; i++)
 	{
-		String toCompare = String(stringArray[i]);
+		String toCompare = String(_functions[i].Name);
 		toCompare.toUpperCase();
 		name.toUpperCase();
 
@@ -12,17 +12,19 @@ uint8_t KNRest::GetIndex(String name, const char** stringArray, int size)
 			return i;
 	}
 
-	return size;
+	return MAX_FUNC;
 }
 
-uint8_t KNRest::GetFuncIndex(String name)
+void KNRest::AddFunc(const char* name, void* callback, CallbackType type)
 {
-	return GetIndex(name, _funcNames, MAX_FUNC);
-}
+	if (_currentFuncIndex >= (MAX_FUNC - 1))
+		return;
 
-uint8_t KNRest::GetVarIndex(String name)
-{
-	return GetIndex(name, _varNames, MAX_VAR);
+	_functions[_currentFuncIndex].Name = name;
+	_functions[_currentFuncIndex].Pointer = callback;
+	_functions[_currentFuncIndex].Type = type;
+
+	_currentFuncIndex++;
 }
 
 void KNRest::ReplyOk(EthernetClient client)
@@ -33,6 +35,28 @@ void KNRest::ReplyOk(EthernetClient client)
 void KNRest::ReplyError(EthernetClient client)
 {
 	client.println("HTTP/1.1 400 BAD REQUEST");
+}
+
+void KNRest::ReplyJSON(EthernetClient client, Vector<FuncParam*>* result)
+{
+	if (result == NULL)
+		return;
+
+	client.println("{");
+
+	for (int i = 0; i < result->Size(); i++)
+	{
+		client.print("\""); client.print((*result)[i]->Name); client.print("\"");
+		client.print(": ");
+		client.print("\""); client.print((*result)[i]->Value); client.print("\"");
+
+		if (i == (result->Size() - 1))
+			client.println("");
+		else
+			client.println(",");
+	}
+
+	client.println("}");
 }
 
 void KNRest::DecodeParams(String args, Vector<FuncParam*>* params)
@@ -118,31 +142,17 @@ void KNRest::HandleRequest(String request, EthernetClient client)
 				KNLog::LogEvent(&(knrest_table[3]), false);
 				KNLog::LogEvent(funcName, true, false);
 
-				_funcCallback[index](params);
+				if (_functions[index].Type == CallbackType::VOID)
+				{
+					((voidCallback)(_functions[index].Pointer))(params);
+					ReplyOk(client);
+				}
+				else if (_functions[index].Type == CallbackType::JSON)
+				{
+					//const Vector<FuncParam*> result = ((jsonCallback)(_functions[index].Pointer))(params);
+					ReplyJSON(client, &(((jsonCallback)(_functions[index].Pointer))(params)));
+				}
 
-				ReplyOk(client);
-				handled = true;
-			}
-			else
-				ReplyError(client);
-		}
-		else if (request.startsWith("/var/"))
-		{
-			commandType = CommandType::VAR;
-
-			// Parse variable name
-			int spaceIndex = request.indexOf(' ');
-			request = request.substring(5, spaceIndex);
-
-			// Retrieve the variable
-			int index = GetVarIndex(request.c_str());
-
-			if (index < MAX_VAR)
-			{
-				KNLog::LogEvent(&(knrest_table[4]), false);
-				KNLog::LogEvent(request, true, false);
-				
-				ReplyOk(client);
 				handled = true;
 			}
 			else
@@ -172,33 +182,19 @@ KNRest::KNRest(byte* ip, byte* mac, byte* gateway, byte* subnet)
 
 	// Init array
 	for (int i = 0; i < MAX_FUNC; i++)
-		_funcNames[i] = "";
-
-	for (int i = 0; i < MAX_VAR; i++)
-		_varNames[i] = "";
+	{
+		_functions[i] = CallbackFunction();
+	}
 }
 
-void KNRest::AddFunc(const char* name, funcCallback callback)
+void KNRest::AddFunc(const char* name, voidCallback callback)
 {
-	if (_funcIndex >= (MAX_FUNC - 1))
-		return;
-
-	_funcNames[_funcIndex] = name;
-	_funcCallback[_funcIndex] = callback;
-
-	_funcIndex++;
+	AddFunc(name, callback, CallbackType::VOID);
 }
 
-template<typename T>
-void KNRest::AddVariable(const char* name, T* var)
+void KNRest::AddFunc(const char* name, jsonCallback callback)
 {
-	if (_varIndex >= (MAX_VAR - 1))
-		return;
-
-	_varNames[_varIndex] = name;
-	_varStruct[_varIndex] = new TypedVariable<T>(var);
-
-	_varIndex++;
+	AddFunc(name, callback, CallbackType::JSON);
 }
 
 void KNRest::Process()

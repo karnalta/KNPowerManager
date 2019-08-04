@@ -127,6 +127,37 @@ void RESTCallBack_PressRst(Vector<FuncParam*> params)
 }
 
 /// <summary>
+/// Get power consumption from a specific module.
+/// </summary>
+/// <param name="params">The parameters.</param>
+Vector<FuncParam*> RESTCallback_GetPowerConsumption(Vector<FuncParam*> params)
+{
+	int moduleId = -1;
+	int duration = -1;
+	ParseParams(&params, &moduleId, &duration);
+
+	Vector<FuncParam*> result;
+
+	// Start operation
+	if (moduleId > -1 && moduleId < (PWR_SWITCH_CNT - 1))
+	{
+		float pc = _knPowerSwitches[moduleId]->GetRealPower();
+		bool po = _knPowerSwitches[moduleId]->GetPowerState();
+
+		FuncParam* pairA = new FuncParam("PowerOn", (String)po);
+		result.PushBack(pairA);
+		FuncParam* pairB = new FuncParam("Consumption", (String)pc);
+		result.PushBack(pairB);
+
+		return result;
+	}
+	else
+		KNLog::LogEvent(&(global_table[1]));
+
+	return result;
+}
+
+/// <summary>
 /// ATmega2560 setup.
 /// </summary>
 void setup()
@@ -189,14 +220,19 @@ void setup()
   // Init SD card
   _knCardStorage = new KNCardStorage();
 
-  // Init KNLog global variables
-  LogClock = _knClock;
-  LogCardStorage = _knCardStorage; 
-
-  // Register RESTful functions
+  // Register REST functions
   _knRest->AddFunc("ResetPSU", &RESTCallBack_ResetPSU);
   _knRest->AddFunc("PressPwr", &RESTCallBack_PressPwr);
   _knRest->AddFunc("PressRst", &RESTCallBack_PressRst);
+  _knRest->AddFunc("GetPowerConsumption", &RESTCallback_GetPowerConsumption);
+
+  // Init RTC clock
+  _knClock = new KNClock();
+  _knClock->UpdateFromNTPServer();
+
+  // Init KNLog global variables
+  LogClock = _knClock;
+  LogCardStorage = _knCardStorage;
 
   // Init TaskScheduler
   _knTaskScheduler = new KNTaskScheduler();
@@ -204,10 +240,6 @@ void setup()
   // Register tasks
   _knTaskScheduler->AddTask(new KNTask("Check Power Modules", PWR_CHECK_INTER, &TaskCallBack_RefreshModules, false));
   _knTaskScheduler->AddTask(new KNTask("Update time from NTP server", 0, 30, 0, &TaskCallBack_UpdateNTP));
-
-  // Init RTC clock
-  _knClock = new KNClock();
-  _knClock->UpdateFromNTPServer();
 }
 
 /// <summary>

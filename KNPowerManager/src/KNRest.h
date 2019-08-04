@@ -3,7 +3,11 @@
 
 #include "Declarations.h"
 
-struct FuncParam {
+/// <summary>
+/// Container key/value pair.
+/// </summary>
+struct FuncParam
+{
 	String Name;
 	String Value;
 
@@ -20,7 +24,8 @@ struct FuncParam {
 	}
 };
 
-typedef void (*funcCallback)(Vector<FuncParam*>);
+typedef void (*voidCallback)(Vector<FuncParam*>);
+typedef Vector<FuncParam*> (*jsonCallback)(Vector<FuncParam*>);
 
 /// <summary>
 /// RESTful API Manager.
@@ -29,41 +34,20 @@ class KNRest
 {
 private:
 	enum RequestType {GET, POST, PUT, DELETE, UNKNOWN};
-	enum CommandType {FUNC, VAR, INVALID};
+	enum CommandType {FUNC, INVALID};
+	enum CallbackType {VOID, JSON};
 
-	struct Variable {};
-	template<typename T>
-	struct TypedVariable : Variable {
-		T* var;
-
-		TypedVariable(T* v) { var = v; }
+	struct CallbackFunction
+	{
+		String Name = "";
+		void* Pointer = nullptr;
+		CallbackType Type = CallbackType::VOID;
 	};
 
-	EthernetServer*	_server = NULL;
-	
-	/// <summary>
-	/// Functions array
-	/// </summary>
+	uint8_t _currentFuncIndex = 0;
+	CallbackFunction _functions[MAX_FUNC];
 
-	uint8_t	_funcIndex = 0;
-	funcCallback _funcCallback[MAX_FUNC];
-	const char* _funcNames[MAX_FUNC];
-	
-	/// <summary>
-	/// Variables array
-	/// </summary>
-
-	uint8_t _varIndex = 0;
-	Variable* _varStruct[MAX_VAR];
-	const char* _varNames[MAX_VAR];
-		
-	/// <summary>
-	/// Gets the index.
-	/// </summary>
-	/// <param name="name">The name.</param>
-	/// <param name="array">The array.</param>
-	/// <returns></returns>
-	uint8_t GetIndex(String name, const char** stringArray, int size);
+	EthernetServer* _server = NULL;
 
 	/// <summary>
 	/// Gets the index of the function.
@@ -71,13 +55,13 @@ private:
 	/// <param name="name">The name.</param>
 	/// <returns></returns>
 	uint8_t GetFuncIndex(String name);
-	
+
 	/// <summary>
-	/// Gets the index of the variable.
+	/// Adds a function.
 	/// </summary>
 	/// <param name="name">The name.</param>
-	/// <returns></returns>
-	uint8_t GetVarIndex(String name);
+	/// <param name="callback">The callback.</param>
+	void AddFunc(const char* name, void* callback, CallbackType type);
 	
 	/// <summary>
 	/// Replies an ok.
@@ -90,6 +74,13 @@ private:
 	/// </summary>
 	/// <param name="client">The client.</param>
 	void ReplyError(EthernetClient client);
+	
+	/// <summary>
+	/// Replies a json result.
+	/// </summary>
+	/// <param name="client">The client.</param>
+	/// <param name="result">The result.</param>
+	void ReplyJSON(EthernetClient client, Vector<FuncParam*>* result);
 	
 	/// <summary>
 	/// Decodes the parameters.
@@ -115,19 +106,18 @@ public:
 	KNRest(byte* ip, byte* mac, byte* gateway, byte* subnet);
 	
 	/// <summary>
-	/// Adds a variable.
+	/// Adds a function.
 	/// </summary>
 	/// <param name="name">The name.</param>
-	/// <param name="var">The variable.</param>
-	template<typename T>
-	void AddVariable(const char* name, T* var);
-	
+	/// <param name="callback">The callback.</param>
+	void AddFunc(const char* name, voidCallback callback);
+	   
 	/// <summary>
 	/// Adds a function.
 	/// </summary>
 	/// <param name="name">The name.</param>
 	/// <param name="callback">The callback.</param>
-	void AddFunc(const char* name, funcCallback callback);
+	void AddFunc(const char* name, jsonCallback callback);
 
 	/// <summary>
 	/// Process (in running loop).
