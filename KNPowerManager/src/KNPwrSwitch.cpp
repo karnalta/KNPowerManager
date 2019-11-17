@@ -106,9 +106,8 @@ void KNPwrSwitch::RefreshPowerConsumption()
 		// Log measure
 		if (DEBUG_MODE)
 		{
-			char message[256];
-			strcpy_P(message, (char*)pgm_read_word(&(knpwrswitch_table[6])));
-			sprintf(StringBuffer, message, _name.c_str(), ((String)_realPower).c_str(), ((String)_appaPower).c_str(), ((String)_powerFactor).c_str());
+			strcpy_P(_tmpMessage, (char*)pgm_read_word(&(knpwrswitch_table[6])));
+			sprintf(StringBuffer, _tmpMessage, _name.c_str(), ((String)_realPower).c_str(), ((String)_appaPower).c_str(), ((String)_powerFactor).c_str());
 			KNLog::LogEvent(StringBuffer);
 		}
 	}

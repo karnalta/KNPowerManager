@@ -19,6 +19,8 @@ KNCardStorage::KNCardStorage()
 			KNLog::LogEvent(&(kncardstorage_table[1]));
 		if (!SD.exists("/html/ind_foo.htm"))
 			KNLog::LogEvent(&(kncardstorage_table[1]));
+
+		_ready = true;
 	}
 	else
 		KNLog::LogEvent(&(kncardstorage_table[0]));
@@ -26,16 +28,20 @@ KNCardStorage::KNCardStorage()
 
 void KNCardStorage::WriteToLog(String line, bool ln = true)
 {
-	File logFile = SD.open("/log/main.log", FILE_WRITE);
-	if (logFile)
+	if (_ready)
 	{
-		ln == true ? logFile.println(line) : logFile.print(line);
-		logFile.close();
-		delay(100);
+		File logFile = SD.open("/log/main.log", FILE_WRITE);
+		if (logFile)
+		{
+			ln == true ? logFile.println(line) : logFile.print(line);
+			logFile.close();
+			delay(100);
+		}
 	}
 }
 
 File KNCardStorage::GetLog()
 {
-	return SD.open("/log/main.log", FILE_READ);
+	if (_ready)
+		return SD.open("/log/main.log", FILE_READ);
 }

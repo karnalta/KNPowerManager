@@ -57,6 +57,11 @@ void KNRest::ReplyJSON(EthernetClient client, Vector<FuncParam*>* result)
 	}
 
 	client.println("}");
+
+	// Free
+	for (int i = 0; i < result->Size(); i++)
+		delete((*result)[i]);
+	result->Clear();
 }
 
 void KNRest::DecodeParams(String args, Vector<FuncParam*>* params)
@@ -157,6 +162,11 @@ void KNRest::HandleRequest(String request, EthernetClient client)
 			}
 			else
 				ReplyError(client);
+
+			// Free
+			for (int i = 0; i < params.Size(); i++)
+				delete(params[i]);
+			params.Clear();
 		}
 
 		// Unknow command
@@ -209,36 +219,39 @@ void KNRest::Process()
 		int currentReqBufferIndex = 0;
 		String request = "";
 
-		while (client.available())
+		while (client.connected())
 		{
-			// Read
-			char c = client.read();
-
-			// Check for HTTP request end
-			if (c == '\n')
+			if (client.available())
 			{
-				KNLog::LogEvent(&(knrest_table[2]), false, true);
-				KNLog::LogEvent(request, true, false);
+				// Read
+				char c = client.read();
 
-				// Handle
-				HandleRequest(request, client);
+				// Check for HTTP request end
+				if (c == '\n')
+				{
+					KNLog::LogEvent(&(knrest_table[2]), false, true);
+					KNLog::LogEvent(request, true, false);
 
-				// Reset
-				currentReqBufferIndex = 0;
-				request = "";
-				break;
-			}
+					// Handle
+					HandleRequest(request, client);
 
-			// Storing max x char of the HTTP request first line
-			if (currentReqBufferIndex < (HTTP_BUFFER_SIZE - 1))
-			{
-				request += c;
-				currentReqBufferIndex++;
+					// Reset
+					currentReqBufferIndex = 0;
+					request = "";
+					break;
+				}
+
+				// Storing max x char of the HTTP request first line
+				if (currentReqBufferIndex < (HTTP_BUFFER_SIZE - 1))
+				{
+					request += c;
+					currentReqBufferIndex++;
+				}
 			}
 		}
 
 		// Give the web browser time to receive the data
-		delay(1);
+		delay(10);
 
 		// Close the connection
 		client.stop();

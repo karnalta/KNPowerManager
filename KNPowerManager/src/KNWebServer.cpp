@@ -86,10 +86,15 @@ IPAddress KNWebServer::QueryDNS(String domain)
 
 void KNWebServer::Process(KNPwrSwitch** psArray)
 {
+	// Drop if not ready
+	if (!_ready)
+		return; 
+
 	// Listen for incoming clients
 	EthernetClient client = _webServer->available();
 	if (client)
 	{
+		_ready = false;
 		KNLog::LogEvent(&(knwebserver_table[1]));
 
 		// An http request ends with a blank line
@@ -146,9 +151,11 @@ void KNWebServer::Process(KNPwrSwitch** psArray)
 		}
 
 		// Give the web browser time to receive the data
-		delay(1);
+		delay(10);
 
 		// Close the connection
 		client.stop();
+
+		_ready = true;
 	}
 }

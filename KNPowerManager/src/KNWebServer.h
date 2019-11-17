@@ -12,6 +12,7 @@ class KNWebServer
 private:
 	EthernetServer* _webServer = NULL;
 	String _httpReq;
+	bool _ready = true;
 
 	void PrintReply(EthernetClient client, String sdFile);
 	void IndexReply(EthernetClient client, KNPwrSwitch** psArray);

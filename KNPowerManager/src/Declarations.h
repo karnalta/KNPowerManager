@@ -25,7 +25,7 @@
 #define PWR_SWITCH_CNT 8		// Maximum number of KNPowerManager modules
 #define PWR_FACTOR 1.00f		// Power consumption adjustement factor
 #define PWR_5V_OFFSET -3		// Offset applied to 512 theorical 2.5V
-#define PWR_THRESHOLD 5			// Minimum consumption (W) to assume device is on
+#define PWR_THRESHOLD 7			// Minimum consumption (W) to assume device is on
 #define PWR_CHECK_INTER 30		// Interval between KNPowerManager's modules check
 
 // Pins Definition (Power Relay)

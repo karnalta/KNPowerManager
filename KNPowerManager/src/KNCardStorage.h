@@ -9,6 +9,7 @@
 class KNCardStorage
 {
 private:
+	bool _ready = false;
 
 public:	
 	/// <summary>

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding ="utf-8" ?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
-  <PropertyGroup Label="Globals" >
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
     <ItemsProjectGuid>{d239c53b-fd43-4ed6-9f3e-745eb15f797d}</ItemsProjectGuid>
@@ -14,7 +14,6 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
-    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Vector.h" />

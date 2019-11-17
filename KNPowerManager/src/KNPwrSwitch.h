@@ -23,6 +23,8 @@ private:
 	bool _powerState = false;
 	String _powerStateDesc;
 
+	char _tmpMessage[256];
+
 	KNSwitchEvent* _switchingEvents[3];
 
 
