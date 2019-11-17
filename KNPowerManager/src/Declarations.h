@@ -17,7 +17,7 @@
 #include <Vector.h>
 
 // Global Settings
-#define DEBUG_MODE 1			// Print debug messages to serial
+#define DEBUG_MODE 0			// Print debug messages to serial
 #define HTTP_BUFFER_SIZE 100	// HTTP request max lenght
 #define MAX_FUNC 10				// Maximum number of REST function that can be registered
 #define MAX_VAR 20				// Maximum number of REST variable that can be registered
@@ -30,7 +30,7 @@
 
 // Power module hard presence
 #define PWR_MODULE_01 1
-#define PWR_MODULE_02 1
+#define PWR_MODULE_02 0
 #define PWR_MODULE_03 0
 #define PWR_MODULE_04 0
 #define PWR_MODULE_05 0

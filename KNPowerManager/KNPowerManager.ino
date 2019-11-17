@@ -141,13 +141,16 @@ Vector<FuncParam*> RESTCallback_GetPowerConsumption(Vector<FuncParam*> params)
 	// Start operation
 	if (moduleId > -1 && moduleId < (PWR_SWITCH_CNT - 1))
 	{
-		float pc = _knPowerSwitches[moduleId]->GetRealPower();
+		float pc = _knPowerSwitches[moduleId]->GetApparentPower();
+		float pk = _knPowerSwitches[moduleId]->GetRealPower();
 		bool po = _knPowerSwitches[moduleId]->GetPowerState();
 
 		FuncParam* pairA = new FuncParam("PowerOn", (String)po);
 		result.PushBack(pairA);
 		FuncParam* pairB = new FuncParam("Consumption", (String)pc);
 		result.PushBack(pairB);
+		FuncParam* pairC = new FuncParam("PowerPeak", (String)pk);
+		result.PushBack(pairC);
 
 		return result;
 	}

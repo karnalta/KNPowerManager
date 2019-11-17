@@ -79,19 +79,30 @@ void KNPwrSwitch::RefreshPowerConsumption()
 	else
 	{
 		// Sampling
-		while (millis() - startTime < 500)
+		while (millis() - startTime < 2000)
 		{
-			float value = analogRead(_aPin);
+			int value = analogRead(_aPin);
 
 			sampleCnt++;
-			sampleTotal += abs(value - (512 + PWR_5V_OFFSET));
+			sampleTotal += value - (512 + PWR_5V_OFFSET);
 
-			delay(1);
+			delay(10);
 		}
+
+		// Always positive
+		if (sampleTotal < 0)
+			sampleTotal = -sampleTotal;
 
 		// Base calculation
 		float voltAvg = (((float)sampleTotal / sampleCnt) * 5.0) / 1024.0;
 		float currAvg = voltAvg / 1000; // (1000 = Burden Resistor (Ohms))
+
+		float avg = ((float)sampleTotal / sampleCnt);
+		if (avg < 0)
+		{
+			Serial.println(sampleTotal);
+			Serial.println(sampleCnt);
+		}		
 
 		// Compute REAL POWER AVERAGE (2000 = TA12-200 ratio)
 		_realPower = ((currAvg * 2000) * 230) * PWR_FACTOR;
