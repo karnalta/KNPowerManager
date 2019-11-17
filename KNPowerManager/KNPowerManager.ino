@@ -209,14 +209,14 @@ void setup()
   _knRest = new KNRest(TCP_IP, TCP_MAC, TCP_GATEWAY, TCP_SUBNET);
 
   // Init PowerSwitch Modules
-  _knPowerSwitches = new KNPwrSwitch*[PWR_SWITCH_CNT]{ new KNPwrSwitch("Module 01", PIN_RELAY01, PIN_PWRSS01, PIN_PWRSW01, PIN_RSTSW01),
-													   new KNPwrSwitch("Module 02", PIN_RELAY02, PIN_PWRSS02, PIN_PWRSW02, PIN_RSTSW02),
-													   new KNPwrSwitch("Module 03", PIN_RELAY03, PIN_PWRSS03, PIN_PWRSW03, PIN_RSTSW03),
-													   new KNPwrSwitch("Module 04", PIN_RELAY04, PIN_PWRSS04, PIN_PWRSW04, PIN_RSTSW04),
-													   new KNPwrSwitch("Module 05", PIN_RELAY05, PIN_PWRSS05, PIN_PWRSW05, PIN_RSTSW05),
-													   new KNPwrSwitch("Module 06", PIN_RELAY06, PIN_PWRSS06, PIN_PWRSW06, PIN_RSTSW06),
-													   new KNPwrSwitch("Module 07", PIN_RELAY07, PIN_PWRSS07, PIN_PWRSW07, PIN_RSTSW07),
-													   new KNPwrSwitch("Module 08", PIN_RELAY08, PIN_PWRSS08, PIN_PWRSW08, PIN_RSTSW08)};
+  _knPowerSwitches = new KNPwrSwitch*[PWR_SWITCH_CNT]{ new KNPwrSwitch("Module 01", PIN_RELAY01, PIN_PWRSS01, PIN_PWRSW01, PIN_RSTSW01, PWR_MODULE_01),
+													   new KNPwrSwitch("Module 02", PIN_RELAY02, PIN_PWRSS02, PIN_PWRSW02, PIN_RSTSW02, PWR_MODULE_02),
+													   new KNPwrSwitch("Module 03", PIN_RELAY03, PIN_PWRSS03, PIN_PWRSW03, PIN_RSTSW03, PWR_MODULE_03),
+													   new KNPwrSwitch("Module 04", PIN_RELAY04, PIN_PWRSS04, PIN_PWRSW04, PIN_RSTSW04, PWR_MODULE_04),
+													   new KNPwrSwitch("Module 05", PIN_RELAY05, PIN_PWRSS05, PIN_PWRSW05, PIN_RSTSW05, PWR_MODULE_05),
+													   new KNPwrSwitch("Module 06", PIN_RELAY06, PIN_PWRSS06, PIN_PWRSW06, PIN_RSTSW06, PWR_MODULE_06),
+													   new KNPwrSwitch("Module 07", PIN_RELAY07, PIN_PWRSS07, PIN_PWRSW07, PIN_RSTSW07, PWR_MODULE_07),
+													   new KNPwrSwitch("Module 08", PIN_RELAY08, PIN_PWRSS08, PIN_PWRSW08, PIN_RSTSW08, PWR_MODULE_08)};
   // Init SD card
   _knCardStorage = new KNCardStorage();
 

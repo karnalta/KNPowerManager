@@ -28,6 +28,16 @@
 #define PWR_THRESHOLD 7			// Minimum consumption (W) to assume device is on
 #define PWR_CHECK_INTER 30		// Interval between KNPowerManager's modules check
 
+// Power module hard presence
+#define PWR_MODULE_01 1
+#define PWR_MODULE_02 1
+#define PWR_MODULE_03 0
+#define PWR_MODULE_04 0
+#define PWR_MODULE_05 0
+#define PWR_MODULE_06 0
+#define PWR_MODULE_07 0
+#define PWR_MODULE_08 0
+
 // Pins Definition (Power Relay)
 #define PIN_RELAY01	2
 #define PIN_RELAY02	3

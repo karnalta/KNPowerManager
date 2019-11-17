@@ -1,7 +1,8 @@
 #include "KNPwrSwitch.h"
 
-KNPwrSwitch::KNPwrSwitch(String name, uint8_t dPin, uint8_t aPin, uint8_t pwrPin, uint8_t rstPin, byte moduleType = 0)
+KNPwrSwitch::KNPwrSwitch(String name, uint8_t dPin, uint8_t aPin, uint8_t pwrPin, uint8_t rstPin, bool isActive = true, byte moduleType = 0)
 {
+	_isActive = isActive;
 	_name = name;
 	_dPin = dPin;
 	_aPin = aPin;
@@ -22,6 +23,9 @@ void KNPwrSwitch::SwitchPower(bool on)
 
 void KNPwrSwitch::PressPowerSwitch(int duration)
 {
+	if (!_isActive)
+		return;
+
 	// Start switch event
 	_switchingEvents[1]->SetDuration(duration);
 	_switchingEvents[1]->Start();
@@ -31,6 +35,9 @@ void KNPwrSwitch::PressPowerSwitch(int duration)
 
 void KNPwrSwitch::PressResetSwitch(int duration)
 {
+	if (!_isActive)
+		return;
+
 	// Start switch event
 	_switchingEvents[2]->SetDuration(duration);
 	_switchingEvents[2]->Start();
@@ -40,6 +47,9 @@ void KNPwrSwitch::PressResetSwitch(int duration)
 
 void KNPwrSwitch::QuickSwitchPower()
 {
+	if (!_isActive)
+		return;
+
 	// Start switch event
 	_switchingEvents[0]->SetDuration(5000);
 	_switchingEvents[0]->Start();
@@ -49,6 +59,9 @@ void KNPwrSwitch::QuickSwitchPower()
 
 void KNPwrSwitch::RefreshPowerConsumption()
 {
+	if (!_isActive)
+		return;
+
 	uint32_t startTime = millis();
 
 	int sampleCnt = 0;
@@ -115,6 +128,9 @@ void KNPwrSwitch::RefreshPowerConsumption()
 
 void KNPwrSwitch::Process()
 {
+	if (!_isActive)
+		return;
+
 	// Check all switching events
 	for (int i = 0; i < 3; i++)
 	{

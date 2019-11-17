@@ -10,6 +10,7 @@
 class KNPwrSwitch
 {
 private:
+	bool _isActive;
 	String _name;
 	uint8_t _dPin = 0;
 	uint8_t _aPin = 0;
@@ -45,7 +46,7 @@ public:
 	/// <param name="pwrPin">The PWR pin.</param>
 	/// <param name="rstPin">The RST pin.</param>
 	/// <param name="moduleType">Type of the module.</param>
-	KNPwrSwitch(String name, uint8_t dPin, uint8_t aPin, uint8_t pwrPin, uint8_t rstPin, byte moduleType = 0);
+	KNPwrSwitch(String name, uint8_t dPin, uint8_t aPin, uint8_t pwrPin, uint8_t rstPin, bool isActive = true, byte moduleType = 0);
 	
 	/// <summary>
 	/// Switches the power.
